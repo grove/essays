@@ -14,6 +14,8 @@ When an agent implements a feature, the person submitting the change may know li
 
 This is an awkward way of acquiring understanding. When implementing something ourselves, we develop our understanding incrementally as we encounter problems and work through them. When reviewing a finished implementation, we have to work backwards from the result. An agent can explain the decisions it made, but reading such an explanation is a different experience from participating in the work.
 
+Working closely with an agent during implementation avoids much of this problem. Staying involved as the code takes shape lets us question choices as they arise rather than reconstructing them afterwards. That kind of collaboration is genuinely useful, though it still binds an engineer's attention to one task at a time. As soon as teams also want agents working concurrently in the background, the review bottleneck returns.
+
 ## Where humans participate
 
 Suppose we want to change when a storage engine can reclaim old log segments. Rather than asking an agent to implement the change and subsequently reviewing its work, I would prefer to investigate the problem with the help of an agent.

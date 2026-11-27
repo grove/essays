@@ -2,7 +2,9 @@
 
 A series of essays examining how AI changes software engineering practices across the development lifecycle.
 
-Much of the discussion about AI in software development focuses on producing more code faster. When implementation becomes cheaper, however, it alters the relative economics of every other engineering activity: discovery, design, understanding, verification, operations and maintenance. It also separates benefits we once acquired automatically by writing code by hand. These essays explore what changes as a result, and how we might spend the time we save.
+Much of the discussion about AI in software development focuses on producing more code faster. When implementation becomes cheaper, however, it alters the relative economics of every other engineering activity: discovery, design, understanding, verification, operations and maintenance. It also separates benefits we once acquired automatically by writing code by hand.
+
+Across the collection runs a recurring choice: we can use the time we save to increase the rate at which we change software, or we can invest some of it in improving the conditions under which future changes are made. These essays explore what that choice looks like across the lifecycle, and how understanding, boundaries, verification, operational legibility and simplicity reinforce one another over the life of a system.
 
 ## Reading order
 

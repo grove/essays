@@ -2,7 +2,7 @@
 
 Four years ago, an order management system acquired a workaround for a warehouse partner that could only report dispatches in a nightly batch file. That partner was replaced two years ago. Yet the batch-reconciliation job, its retry tables, its special cases in the cancellation logic and its tests are still in the codebase.
 
-Every time someone changes how orders are cancelled or refunded, those paths have to be understood, preserved and worked around. Nobody removes them because no customer is asking for it, and nobody is entirely certain whether some obscure reporting script still reads the retry table.
+Every time someone changes how orders are canceled or refunded, those paths have to be understood, preserved and worked around. Nobody removes them because no customer is asking for it, and nobody is entirely certain whether some obscure reporting script still reads the retry table.
 
 When AI makes adding software cheap, the imbalance between what we add and what we remove grows much faster than most teams notice.
 
@@ -18,7 +18,7 @@ AI shifts the economics of that accumulation in two ways.
 
 First, dead code costs more when agents work in the repository. An agent starting a fresh session does not know which parts of the codebase are relics of a retired partner and which represent current requirements. It searches the repository, gathers context and infers local conventions from what it finds. Obsolete branches, unused flags and retired tables show up in retrieval results, occupy context and become patterns that agents copy into new work.
 
-Second, one of the oldest justifications for keeping dormant code around has weakened. Teams used to hold on to unused features and fallback paths because rebuilding them later would be expensive if someone ever asked for them again. When implementation is cheap, and the old code sits in version control anyway, keeping dead paths alive in production just in case buys far less than it used to.
+Second, one of the oldest justifications for keeping dormant code around has weakened, though not disappeared. Teams used to hold on to unused features and fallback paths because rebuilding them later would be expensive if someone ever asked for them again. Cheap implementation lowers the cost of rewriting code, and the old code sits in version control anyway. It does not make reconstructing the domain knowledge, integration quirks or verification evidence behind that code free. Still, leaving dead paths alive inside active code rarely preserves that knowledge well; recording why a workaround existed before retiring it usually protects what matters at far lower ongoing cost.
 
 Not all unused code imposes the same cost. An isolated export script sitting at the edge of a system can often be ignored cheaply. The warehouse batch path sits inside order cancellation and refund handling, where ordinary changes happen every week and have to work around it.
 

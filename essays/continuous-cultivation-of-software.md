@@ -84,7 +84,9 @@ Consider a later investigation into when the engine can safely reclaim old log s
 
 Each useful investigation leaves the next one with a better starting point. The same knowledge helps an engineer implementing a new feature or an agent reviewing a change. This is the opportunity I find most interesting: using AI to make future engineering easier, for humans and agents alike.
 
-Faulty tests and unsupported explanations can compound error instead. Observations about current behavior do not establish new requirements, and old evidence needs reconsidering when its assumptions change. Whether cultivation produces a compounding benefit at an acceptable cost is something we still need to demonstrate in practice.
+Faulty tests and unsupported explanations can compound error instead. Observations about current behavior do not establish new requirements, and old evidence needs reconsidering when its assumptions change.
+
+Even when done well, cultivation pays off only where its returns have time to compound. A long-lived storage engine or billing system carries costly guarantees across years of change. A short-lived prototype, a disposable internal tool or software whose failures are cheap to notice and fix rarely justifies building durable investigation harnesses and maintained rationale. Every investigation costs compute, review attention and delayed feature work. Whether cultivation produces a compounding benefit at an acceptable cost is something we still need to demonstrate in practice.
 
 ## Start small
 

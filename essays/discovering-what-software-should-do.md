@@ -10,31 +10,31 @@ An AI agent given the task of implementing snapshots could encounter these quest
 
 ## Discovering requirements
 
-In his essay [No Silver Bullet](https://www.seltzer.com/margo/teaching/CS508.19/background/NoSilverBullet.html), Fred Brooks argued that determining what software should do is one of the most difficult parts of developing it. He was sceptical of our ability to establish satisfactory requirements for a substantial piece of software before building and trying some version of it. He considered rapid prototyping one of the more promising ways of addressing this difficulty.
+In his essay [No Silver Bullet](https://www.seltzer.com/margo/teaching/CS508.19/background/NoSilverBullet.html), Fred Brooks argued that determining what software should do is one of the most difficult parts of developing it. He was skeptical of our ability to establish satisfactory requirements for a substantial piece of software before building and trying some version of it. He considered rapid prototyping one of the more promising ways of addressing this difficulty.
 
 Much of what we learn during implementation concerns the problem we are trying to solve rather than the software itself.
 
-Consider an order management system in which we want customers to be able to cancel orders before they have been dispatched. While implementing this feature, we discover that the warehouse sometimes reports a dispatch several hours after it has occurred. We cannot reliably determine whether an order can still be cancelled from the information available to the application.
+Consider an order management system in which we want customers to be able to cancel orders before they have been dispatched. While implementing this feature, we discover that the warehouse sometimes reports a dispatch several hours after it has occurred. We cannot reliably determine whether an order can still be canceled from the information available to the application.
 
 We could work around this in the software, but it would be worth talking to the people operating the warehouse. How late in the dispatch process can they intervene? Does it make sense to allow cancellations once an order has been packed? We could discover that a small change to the warehouse's operating procedure would make the software simpler and provide a better service to customers.
 
 There is a difference between a requirement that somebody has neglected to communicate and a question that nobody has yet considered. The distinction matters because the latter cannot be resolved by improving the communication between the people specifying the software and those implementing it. Somebody needs to investigate the problem.
 
-Some of the most useful work an engineer does is recognising when a difficulty encountered during implementation warrants reconsidering what we are trying to achieve.
+Some of the most useful work an engineer does is recognizing when a difficulty encountered during implementation warrants reconsidering what we are trying to achieve.
 
 ## Delegating decisions
 
 As AI becomes more capable of implementing software, it is tempting to establish a division of work in which humans specify the requirements and agents implement them. This is a sensible arrangement where we have a good understanding of what we want. The difficulty is that we do not always know how well we understand a problem until we attempt to solve it.
 
-Returning to the storage engine, suppose an agent decides that snapshots should expire after a configurable period. It implements expiration, makes sure that applications receive an appropriate error and documents the behaviour.
+Returning to the storage engine, suppose an agent decides that snapshots should expire after a configurable period. It implements expiration, makes sure that applications receive an appropriate error and documents the behavior.
 
 Whether this is a desirable property of the storage engine depends on what applications use snapshots for. If they are used to produce backups, an occasional interruption could be acceptable. If an application uses them to provide consistent reads across a lengthy computation, expiration complicates its design.
 
-By the time we review the implementation, expiration has become part of the design. Our attention is directed towards whether it has been implemented correctly. We can spend a substantial amount of time reviewing the implementation and its accompanying tests without questioning whether snapshots should expire in the first place.
+By the time we review the implementation, expiration has become part of the design. Our attention is directed toward whether it has been implemented correctly. We can spend a substantial amount of time reviewing the implementation and its accompanying tests without questioning whether snapshots should expire in the first place.
 
 The problem is not that the agent has made a decision on our behalf. We delegate a great many decisions whenever we assign work to another engineer, and there is no particular reason to change that. Requiring agents to consult us about every ambiguity would make them tedious to work with.
 
-But deciding how to implement snapshot expiration and deciding whether snapshots should expire are different kinds of decisions. The latter has consequences for every application using the feature. We need to recognise such decisions when they arise and give them the attention they deserve.
+But deciding how to implement snapshot expiration and deciding whether snapshots should expire are different kinds of decisions. The latter has consequences for every application using the feature. We need to recognize such decisions when they arise and give them the attention they deserve.
 
 ## Using implementation to investigate requirements
 
@@ -70,13 +70,13 @@ Rather than assigning an agent the task of implementing snapshots, we could give
 >
 > Measure disk space consumption, compaction backlog and write latency. Examine what happens when the retained snapshot is released or expires, and what an application experiences when it attempts to read from an expired snapshot.
 >
-> Document the results, the limitations of the experiment and any questions about the desired behaviour that arose during implementation.
+> Document the results, the limitations of the experiment and any questions about the desired behavior that arose during implementation.
 >
 > The experimental implementations are not intended to be merged.
 
 The result of this work would be a report accompanied by some experimental code and a reproducible workload. We could examine the measurements, challenge the assumptions behind the experiment and extend it where necessary.
 
-We would still need to establish how representative the workload is of the applications using the storage engine. A ten-minute experiment tells us little about the behaviour of a database under several days of production traffic. But it gives us somewhere to start and helps us formulate better questions.
+We would still need to establish how representative the workload is of the applications using the storage engine. A ten-minute experiment tells us little about the behavior of a database under several days of production traffic. But it gives us somewhere to start and helps us formulate better questions.
 
 We could also investigate what would be involved in making the applications tolerate snapshot expiration. If accommodating expiration turns out to be difficult, we have learned something about the cost of imposing that restriction on users of the storage engine.
 
