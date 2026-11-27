@@ -26,7 +26,7 @@ When a team uses faster implementation mostly to push further down the feature b
 
 The alternative is a loop where improvements compound in the other direction.
 
-Part of that work keeps unnecessary complexity out of the codebase in the first place. Running cheap throwaway experiments before committing to production code, as I argued in [Discovering what software should do](./discovering-what-software-should-do.md), lets a team find out which requirements actually matter before embedding early guesses into the system. Between feature requests, [continuous cultivation of software](./continuous-cultivation-of-software.md) puts agents to work probing guarantees that nobody has tested yet, while incidents feed back into permanent reproductions and clearer telemetry rather than stopping at a quick patch.
+Part of that work keeps unnecessary complexity out of the codebase in the first place. Running cheap throwaway experiments before committing to production code, as I argued in [Discovering what software should do](./discovering-what-software-should-do.md), lets a team find out which requirements actually matter before embedding early guesses into the system. Between feature requests, [continuous cultivation of software](./continuous-cultivation-of-software.md) uses bounded investigations to probe guarantees nobody has tested yet, while incidents feed back into permanent reproductions and clearer telemetry rather than stopping at a quick patch.
 
 What turns these from a list of good habits into a genuine feedback loop is that each improvement lowers the cost of making the next one. Stronger independent verification makes deleting obsolete code and simplifying internals safe instead of frightening, shifting [the economics of removing software](./the-economics-of-removing-software.md). Removing dead workarounds and redundant state shrinks what humans and agents have to read, which makes the next investigation cheaper and less prone to error. Clearer, mechanically enforced boundaries keep routine edits local, reducing the review burden and making delegation safer. That leaves engineers with more room to investigate hard problems instead of spending their week inspecting diffs.
 
@@ -52,7 +52,7 @@ A greenfield rewrite looks clean mostly because it has not yet met reality. A we
 
 ## Where this breaks down
 
-None of this is guaranteed, and some parts of software really do harden with age no matter how disciplined a team is.
+The improvement loop described here is still a hypothesis, not an established empirical result. Few teams have had the chance to run it long enough to see whether its returns genuinely compound over years of real maintenance, and some parts of software really do harden with age no matter how disciplined a team is.
 
 On-disk storage formats, public APIs with outside consumers, historical financial records and regulatory commitments accumulate in one direction. You can rewrite a pricing engine behind a clean interface, but you cannot casually simplify away a file format or a billing contract that external systems depend on.
 
@@ -60,7 +60,7 @@ The machinery built to keep a system healthy can rot too. An overgrown crash sim
 
 The hardest obstacle, however, is organizational. Across every part of the lifecycle, the same imbalance shows up: new features are visible on a roadmap, whereas the return on tighter boundaries, stronger harnesses and deleted workarounds appears as delays that do not happen and outages that never wake anyone up. Investing in the conditions of future work competes directly with shipping the next visible request, and its payoff often arrives well after the current planning cycle ends.
 
-Unless a team explicitly reserves effort for cultivation, verification and removal, cheaper implementation will not improve how its software ages. It will only accelerate the default.
+Unless a team explicitly reserves effort for investigation, verification, simplification and removal, cheaper implementation will not improve how its software ages. It will only accelerate the default.
 
 ## Telling which loop you are in
 

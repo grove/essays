@@ -18,9 +18,9 @@ Working closely with an agent during implementation avoids much of this problem.
 
 ## Where humans participate
 
-Suppose we want to change when a storage engine can reclaim old log segments. Rather than asking an agent to implement the change and subsequently reviewing its work, I would prefer to investigate the problem with the help of an agent.
+Suppose we want to change how an order management system handles partial refunds when part of an order is canceled. Rather than asking an agent to implement the change and subsequently reviewing its work, I would prefer to investigate the problem with the help of an agent.
 
-We can examine the relationship between checkpointing and recovery, explore what happens when a checkpoint is interrupted and consider whether we need to retain enough log data to recover from certain kinds of corruption. We can conduct experiments and explore alternative designs before deciding what to implement.
+We can trace how checkout, invoicing and the payment ledger currently interact, examine what happens when a refund request arrives while a payment confirmation is still in flight and test how different designs handle rounding or promotional discounts. We can conduct experiments and explore alternative designs before deciding what to implement.
 
 Much of the implementation work can then be delegated. We already understand the problem, know why we chose a particular design and have some idea of how to verify it.
 

@@ -56,7 +56,7 @@ Even as the technical effort of removal falls, obsolete paths will not disappear
 
 Most of the remaining obstacles are social and organizational rather than technical. Keeping an unused branch feels safe; deleting it feels risky. If the warehouse workaround stays in place for another three years, its cost is diffuse and largely invisible, spread across every future change as slightly slower reviews, noisier context and slightly more convoluted tests. If deleting it breaks one forgotten report, the failure is immediate and attributable.
 
-Roadmaps reinforce this imbalance. Product plans and stakeholder reviews naturally reward visible new capabilities, whereas much of the value of removing code lies in friction that no longer occurs: changes that go smoothly next quarter, defects that do not happen and confusion a new engineer or agent never runs into. If an organization spends all the time AI saves moving faster down the feature backlog, teams will rationally keep adding software while leaving yesterday's workarounds untouched.
+Roadmaps reinforce this imbalance. Product plans and stakeholder reviews naturally reward visible new capabilities, whereas much of the value of removing code lies in friction that no longer occurs: changes that go smoothly next quarter, defects that do not happen and confusion a new engineer or agent never runs into. If an organization directs cheaper implementation exclusively toward moving faster down the feature backlog, teams will rationally keep adding software while leaving yesterday's workarounds untouched.
 
 ## Practicing deliberate subtraction
 

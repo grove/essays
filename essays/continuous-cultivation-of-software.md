@@ -8,7 +8,7 @@ Consider a storage engine that promises not to lose acknowledged writes when a p
 
 There is no failing build to investigate and probably no issue on the backlog. The problem, if there is one, is waiting for somebody to ask a good question.
 
-Most maintainers have a feature to finish or a known bug to fix. Spending an afternoon investigating a problem that may not exist is difficult to justify. AI gives us a chance to make such investigations a routine part of maintaining software. I call this practice **continuous cultivation of software**.
+Most maintainers have a feature to finish or a known bug to fix. Spending an afternoon investigating a problem that may not exist is difficult to justify. AI gives us a chance to make proactive investigation, along with the verification, simplification and maintenance of rationale that follow from it, a routine part of tending existing software. I call this broader practice **continuous cultivation of software**.
 
 ## When code becomes cheaper
 
@@ -24,7 +24,7 @@ Continuous integration did not invent compilation or testing. It made integratio
 
 We can do something similar with proactive investigation. We already have the methods: exploratory testing, fuzzing, fault injection, architectural review and performance analysis, among others. What is missing in many projects is a regular process for deciding where to apply them, carrying out the investigations and making use of what is learned.
 
-A software farm is a way of organizing that work. It complements the software factory, which organizes the implementation and delivery of changes.
+A software farm is a way of organizing the investigative side of continuous cultivation. It complements the software factory, which organizes the implementation and delivery of changes.
 
 **A software factory starts with work to be done. A software farm starts with a question worth investigating.**
 

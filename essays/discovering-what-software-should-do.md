@@ -86,7 +86,7 @@ I think it is worth making a distinction between this kind of assignment and an 
 
 This is also a natural extension of what I have previously described as [continuous cultivation of software](./continuous-cultivation-of-software.md). We can investigate the requirements of established software in much the same way. A restriction introduced several years ago can be subjected to experiments that would have been too expensive to conduct when the original decision was made. We could find that changes elsewhere in the system have made the restriction unnecessary, or that we misunderstood the problem in the first place.
 
-## What we do with the time we save
+## What we do with cheaper implementation
 
 There is an implicit assumption in much of the discussion about AI and software development that we know what we ought to build and that we would benefit from being able to build more of it.
 
