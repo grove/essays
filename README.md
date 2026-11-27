@@ -2,16 +2,20 @@
 
 A series of essays examining how AI changes software engineering practices across the development lifecycle.
 
-Much of the discussion about AI in software development focuses on producing more code faster. When implementation becomes cheaper, however, it alters the relative economics of every other engineering activity — discovery, understanding, verification and maintenance — and separates benefits we once acquired automatically by writing code by hand. These essays explore what changes as a result, and how we might spend the time we save.
+Much of the discussion about AI in software development focuses on producing more code faster. When implementation becomes cheaper, however, it alters the relative economics of every other engineering activity: discovery, design, understanding, verification, operations and maintenance. It also separates benefits we once acquired automatically by writing code by hand. These essays explore what changes as a result, and how we might spend the time we save.
 
 ## Reading order
 
 The essays can be read independently, though they build on one another in the order below:
 
 1. **[Continuous cultivation of software](./essays/continuous-cultivation-of-software.md)** — Introduces *software farms* as a complement to software factories: making proactive, bounded investigation of existing software a routine practice that compounds knowledge and simplifies future work.
-2. **[Implementation and understanding](./essays/implementation-and-understanding.md)** — Examines how delegating implementation separates producing code from building a mental model of the system, and argues for deliberate practices to cultivate engineering understanding.
-3. **[When code review becomes the work](./essays/when-code-review-becomes-the-work.md)** — Looks at what happens when verification becomes the bottleneck and reviewing agent output replaces the rewarding parts of engineering, proposing upstream investigation, durable verification instruments and bounded autonomy.
-4. **[Discovering what software should do](./essays/discovering-what-software-should-do.md)** — Argues that requirements are often discovered rather than merely specified, and shows how cheap throwaway implementations and bounded investigations can inform consequential decisions before committing to production code.
+2. **[Discovering what software should do](./essays/discovering-what-software-should-do.md)** — Argues that requirements are often discovered rather than merely specified, and shows how cheap throwaway implementations and bounded investigations can inform consequential decisions before committing to production code.
+3. **[Implementation and understanding](./essays/implementation-and-understanding.md)** — Examines how delegating implementation separates producing code from building a mental model of the system, and argues for deliberate practices to cultivate engineering understanding.
+4. **[Designing for delegation](./essays/designing-for-delegation.md)** — Explores how clear module boundaries, structural enforcement of core guarantees and small replaceable components determine what work can be safely delegated to agents.
+5. **[When code review becomes the work](./essays/when-code-review-becomes-the-work.md)** — Looks at what happens when verification becomes the bottleneck and reviewing agent output replaces the rewarding parts of engineering, proposing upstream investigation, durable verification instruments and bounded autonomy.
+6. **[Knowing what constitutes convincing evidence](./essays/knowing-what-constitutes-convincing-evidence.md)** — Examines why passing tests generated alongside code can become circular confirmation, and how independent properties, fault injection and proportionate verification build justified confidence.
+7. **[Operating software you didn't write](./essays/operating-software-you-didnt-write.md)** — Follows delegated and autonomous changes into production, looking at operational accountability, understanding under incident pressure, operational legibility and closing the loop with cultivation.
+8. **[The economics of removing software](./essays/the-economics-of-removing-software.md)** — Addresses the growing asymmetry between adding and deleting code when implementation is cheap, and how teams can practice deliberate subtraction to keep systems small enough to understand.
 
 ## License
 
