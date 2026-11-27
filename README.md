@@ -26,6 +26,8 @@ The essays can be read independently, though they build on one another in the or
 
 Where these essays focus on the condition of a codebase and the daily practices that keep a system healthy, the companion collection extends the argument to what engineering leaves behind: shared knowledge, engineering judgment, architectural options and organizational habits. It asks how teams should spend the attention that cheaper implementation frees, and how to tell when those investments genuinely make future work more effective rather than adding upkeep.
 
+The distant aim across the collections is to become ten times as effective as a software team with AI, while keeping the work sustainable and the software dependable. [What would ten times look like?](https://grove.github.io/engineering-that-compounds/essays/what-would-ten-times-look-like.html) follows a billing change to see what holds the team back as implementation gets easier. It uses the ambition to choose the next investment and leaves measured claims to the evidence from later work.
+
 ## License
 
 Licensed under the [Apache License 2.0](./LICENSE).
