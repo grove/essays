@@ -246,6 +246,35 @@ h1 {
   z-index: 1;
 }
 
+/* Companion collection note */
+.companion-note {
+  margin-top: 2.75rem;
+}
+
+.companion-note .section-heading {
+  margin-top: 0;
+}
+
+.companion-note > p:first-of-type {
+  margin: 0.4rem 0 0.5rem;
+  font-size: 1.15rem;
+}
+
+.companion-note > p:first-of-type strong {
+  font-weight: 500;
+}
+
+.companion-note > p:not(:first-of-type) {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--muted);
+}
+
+.companion-note > p:not(:first-of-type) + p {
+  margin-top: 0.75rem;
+}
+
 /* Essay page navigation */
 .top-nav {
   display: flex;

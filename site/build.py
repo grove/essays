@@ -230,12 +230,17 @@ def first_paragraph_text(md: str) -> str:
     return ""
 
 
-def parse_readme(md: str) -> tuple[str, str | None, str, str, list[dict[str, str]]]:
+def parse_readme(md: str) -> tuple[str, str | None, str, str, list[dict[str, str]], str]:
     title, subtitle, body = split_header(md)
     parts = re.split(r"^##\s+Reading order\s*$", body, maxsplit=1, flags=re.MULTILINE)
     intro_md = parts[0].strip()
-    rest = parts[1] if len(parts) > 1 else ""
-    rest = re.split(r"^##\s+", rest, maxsplit=1, flags=re.MULTILINE)[0].strip()
+    after_reading = parts[1] if len(parts) > 1 else ""
+    rest = re.split(r"^##\s+", after_reading, maxsplit=1, flags=re.MULTILINE)[0].strip()
+
+    companion_md = ""
+    companion_parts = re.split(r"^##\s+Companion collection\s*$", after_reading, maxsplit=1, flags=re.MULTILINE)
+    if len(companion_parts) > 1:
+        companion_md = re.split(r"^##\s+", companion_parts[1], maxsplit=1, flags=re.MULTILINE)[0].strip()
 
     note_lines: list[str] = []
     entries: list[dict[str, str]] = []
@@ -258,7 +263,7 @@ def parse_readme(md: str) -> tuple[str, str | None, str, str, list[dict[str, str
         elif not entries:
             note_lines.append(s)
 
-    return title, subtitle, intro_md, " ".join(note_lines), entries
+    return title, subtitle, intro_md, " ".join(note_lines), entries, companion_md
 
 
 def html_shell(*, title: str, description: str, css_href: str, body: str) -> str:
@@ -291,7 +296,7 @@ def html_shell(*, title: str, description: str, css_href: str, body: str) -> str
 
 def build(out_dir: Path = OUT_DIR) -> list[Path]:
     readme_md = README_PATH.read_text(encoding="utf-8")
-    site_title, site_subtitle, intro_md, reading_note, listed = parse_readme(readme_md)
+    site_title, site_subtitle, intro_md, reading_note, listed, companion_md = parse_readme(readme_md)
 
     # Ensure every essay in essays/ is included even if not yet added to README.md.
     by_slug = {e["slug"]: e for e in listed}
@@ -427,6 +432,14 @@ def build(out_dir: Path = OUT_DIR) -> list[Path]:
 
     subtitle_html = f'\n      <p class="subtitle">{html.escape(site_subtitle)}</p>' if site_subtitle else ""
     note_html = f'\n      <p class="reading-note">{html.escape(reading_note)}</p>' if reading_note else ""
+    companion_html = ""
+    if companion_md:
+        companion_body = render_markdown(companion_md, make_resolver(index_path, in_essays=False))
+        companion_html = f"""
+      <aside class="companion-note" aria-labelledby="companion-collection">
+        <h2 id="companion-collection" class="section-heading">Companion collection</h2>
+        {companion_body}
+      </aside>"""
     index_body = f"""    <header class="site-header">
       {SAKURA_SVG}
       <h1>{html.escape(site_title)}</h1>{subtitle_html}
@@ -440,7 +453,7 @@ def build(out_dir: Path = OUT_DIR) -> list[Path]:
         <ol class="essay-list">
 {chr(10).join(list_items)}
         </ol>
-      </section>
+      </section>{companion_html}
     </main>"""
 
     index_path.write_text(
@@ -478,6 +491,8 @@ def self_check() -> None:
     pages = build()
     expected = len(list(ESSAYS_DIR.glob("*.md"))) + 1
     assert len(pages) == expected, f"Expected {expected} pages, built {len(pages)}"
+    index_html = (OUT_DIR / "index.html").read_text(encoding="utf-8")
+    assert "https://grove.github.io/engineering-that-compounds/" in index_html, "Companion collection link missing"
 
 
 if __name__ == "__main__":

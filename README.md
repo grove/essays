@@ -20,6 +20,12 @@ The essays can be read independently, though they build on one another in the or
 8. **[The economics of removing software](./essays/the-economics-of-removing-software.md)** — Addresses the growing asymmetry between adding and deleting code when implementation is cheap, and how teams can practice deliberate subtraction to keep systems small enough to understand.
 9. **[Software that improves with age](./essays/software-that-improves-with-age.md)** — Brings the collection together around two feedback loops, examining how cheaper implementation can accelerate decay or feed a self-reinforcing cycle in which a system's accumulated experience becomes an engineering asset rather than a liability.
 
+## Companion collection
+
+**[Engineering that compounds](https://grove.github.io/engineering-that-compounds/)**
+
+Where these essays focus on the condition of a codebase and the daily practices that keep a system healthy, the companion collection extends the argument to what engineering leaves behind: shared knowledge, engineering judgment, architectural options and organizational habits. It asks how teams should spend the attention that cheaper implementation frees, and how to tell when those investments genuinely make future work more effective rather than adding upkeep.
+
 ## License
 
 Licensed under the [Apache License 2.0](./LICENSE).
