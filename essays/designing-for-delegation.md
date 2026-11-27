@@ -1,57 +1,63 @@
 # Designing for delegation
 
-Suppose we want to add a new promotional discount rule to an order management system. On the surface, it looks like a routine change that an AI agent should be able to implement with minimal supervision.
+Suppose we want to add a new promotional discount rule to an order management system, say a bundle discount that applies only to certain product categories. On the surface, it looks like a routine change that an AI agent ought to handle with little supervision.
 
-When the agent starts working, however, it discovers that assumptions about discounts are scattered across checkout validation, invoice generation, refund calculation and a reporting query. To implement the rule, it has to modify all four areas, including the code responsible for ensuring that refunds never exceed the amount collected. What began as a low-risk change has become entangled with billing invariants we cannot afford to get wrong.
+When the agent starts working, however, it finds that assumptions about discounts are scattered across checkout validation, invoice generation, refund calculation and a reporting query. To make the new rule work, it has to edit all four areas, including the code responsible for ensuring that refunds never exceed the amount collected. What looked like a low-risk feature now touches billing invariants we cannot afford to break.
 
-Whether a task can be safely delegated to an agent depends less on the capability of the model than on the structure of the software.
+It is tempting to treat this as a limitation of the model and wait for agents that can reason more reliably across tangled codebases. Even an experienced engineer would hesitate before making that change casually, though. Handing it to an agent simply exposes the coupling sooner. How safely we can delegate a task depends as much on the structure of the software as on the capability of the agent.
 
 ## Boundaries for humans and boundaries for agents
 
-In his 1972 paper *On the Criteria To Be Used in Decomposing Systems into Modules*, David Parnas argued that module boundaries should be chosen to hide design decisions that are likely to change. If a decision is contained within a single module, it can be altered without disturbing the rest of the system.
+In his 1972 paper *On the Criteria To Be Used in Decomposing Systems into Modules*, David Parnas argued that module boundaries should be chosen to hide design decisions that are likely to change. If a decision lives inside a single module, it can be revised without disturbing the rest of the system.
 
-For decades, we have designed software architecture primarily around human cognitive load and organizational structure. Good boundaries let a team work on one part of a system without having to keep the whole system in mind.
+For decades, we have valued those boundaries mostly for human reasons. Good boundaries limit how much of a system a person has to keep in mind at once, and as I argued in [Implementation and understanding](./implementation-and-understanding.md), they make it possible to understand one part of a codebase without having to read all of it.
 
-When AI agents participate in development, boundaries take on an additional role. They define the scope of safe delegation. A clear boundary limits how much context an agent needs to load, what files it needs permission to touch and what evidence is required to verify its work.
+When AI agents participate in development, those same boundaries do additional work, and two qualities matter much more than they used to.
 
-In a poorly structured system, small changes leak across unrelated concerns. Every task requires understanding large parts of the codebase and reviewing wide diffs that mix trivial adjustments with sensitive logic. In a well-bounded system, routine work stays contained.
+The first is mechanical enforcement. Human teams rely heavily on unwritten conventions: everyone on the team eventually learns which helper must be called before writing to the ledger, or which module you do not touch without asking someone who knows the billing code. An agent working across fresh sessions does not carry that tribal knowledge, and it is strongly biased toward doing whatever makes the current task succeed and the tests pass. If a boundary exists only as a folder convention or a comment, an agent will cross it without hesitation, add a special case in the wrong place or duplicate logic to get past a failure. Boundaries for delegation have to be enforced by types, visibility rules, narrow APIs or repository permissions.
+
+The second is locality of reasoning. Experienced maintainers often live comfortably with deep inheritance hierarchies, implicit framework wiring or shared utilities stretched across several features because they already hold the mental model in their heads. For an agent that has to gather context before making a change, scattered indirection turns a small adjustment into a tour of the repository. A self-contained module with explicit wiring is much easier for an agent to work on safely, even when it involves a little more repetition than a human author might have chosen.
 
 ## Separating guarantees from variation
 
-Not all code in a system carries the same risk.
+Not every part of a system carries the same consequence when it goes wrong. In the order management system, payment ledger integrity and endpoint authorization are core guarantees. Promotional rules, email templates and export formats change frequently and should never be in a position to compromise them.
 
-In a storage engine, the write-ahead log, checkpointing and recovery paths enforce core durability guarantees. A mistake there can corrupt customer data. By contrast, a new administrative command or a diagnostic metric carries far lower consequence.
+Look back at why the promotional discount rule was so awkward to change. Invoice generation, refund calculation and reporting were each re-interpreting raw discount rules on their own.
 
-In the order management system, payment ledger integrity and endpoint authorization are high-consequence guarantees. Promotional rules, email templates and export formats change frequently and should not be able to compromise them.
+We can structure that domain differently. If checkout evaluates promotional rules once and records the outcome as immutable line-item price adjustments on the order, downstream components no longer need to know what kind of promotion produced a discount. Invoicing, refunds and reporting all work from settled amounts. Meanwhile, the invariant that refunds never exceed collected payments can live inside a single ledger component whose interface makes it impossible to record an unvalidated refund, backed by strict types or database constraints rather than a convention every caller has to remember.
 
-Designing for delegation means separating these layers deliberately. High-consequence guarantees should be enforced structurally at narrow, well-protected choke points rather than left to convention across dozens of call sites. If refunds are always validated by a single ledger component with strict invariants, and authorization is enforced centrally at endpoint registration rather than remembered inside every handler, an agent modifying a promotional rule or adding a new view cannot easily violate those rules by accident.
+Once that separation is in place, adding a new promotional rule touches only the pricing module. Even if the agent gets the rule completely wrong, it cannot corrupt the ledger or issue an over-refund, because the pricing code has no way to bypass the ledger's checks.
 
-This is not a new architectural principle. What changes with AI is the return on investing in it. Every invariant we move from human convention into structural enforcement expands the area of the codebase where work can be delegated with confidence.
+None of this is new; engineers have been trying to separate stable cores from volatile rules for decades. What changes is the payoff. Every invariant we move out of convention and into a structural choke point expands the part of the codebase where work can be delegated without close supervision.
 
-## Blast radius and authority
+## Making boundaries enforceable
 
-In [When code review becomes the work](./when-code-review-becomes-the-work.md), I suggested that routine, independently verifiable changes should be able to proceed without individual human approval, while changes to core guarantees retain close human involvement.
+If we want routine, independently verifiable changes to proceed with lighter human oversight, a question I explore further in [When code review becomes the work](./when-code-review-becomes-the-work.md), our review and permission rules can only be as sharp as the boundaries in the code.
 
-That distinction is difficult to enforce if core guarantees and routine features live in the same modules. Permissions and review policies can only be as crisp as the boundaries in the codebase.
+When a subsystem sits behind a narrow interface with explicit contracts and independent verification checks, we can grant an agent wide latitude inside that module while denying it permission to alter the interface, the core guarantees or the checks themselves. If the agent makes a mistake, the blast radius stays local and the failure is much more likely to be caught at the boundary, provided the contract and its tests actually reflect what matters.
 
-When a subsystem has a narrow interface, explicit contracts and independent verification checks, we can grant an agent broad freedom inside that boundary while denying it authority to alter the contract or the checks themselves. If the agent makes a mistake, the blast radius is limited to that component and the failure is caught at the boundary.
-
-When modules share mutable state, rely on undocumented ordering assumptions or reach directly into each other's internals, no review rule can reliably separate safe changes from dangerous ones. We end up either reviewing everything manually or accepting risks we do not understand.
+When modules share mutable state, rely on undocumented ordering assumptions or reach directly into each other's internals, no review rule can reliably separate a safe change from a dangerous one. A diff that claims to add a discount rule looks indistinguishable from one that subtly alters how refunds are accounted for. We end up either reviewing everything line by line or accepting risks we have not really evaluated.
 
 ## Designing modules to be replaced
 
-Historically, we have been cautious about rewriting existing components because implementation was expensive. Once a module worked, we tended to extend and patch it for years, even after its internal design no longer suited the problem.
+Historically, we have been reluctant to rewrite working components because implementation was expensive. Once a module worked in production, we extended and patched it for years, even after its internal structure no longer matched the problem. That gave us a habit of building elaborate internal abstractions up front in the hope of accommodating future variations without a rewrite.
 
-Cheaper implementation shifts that trade-off. If a component is small, cleanly isolated behind a clear interface and backed by behavioral tests at its boundary, replacing its internals becomes far less risky than layering another workaround onto an aging design.
+Cheaper implementation changes that calculation. Speculative internal flexibility has a real ongoing cost: extra layers of indirection, more context for an agent to load and more places for subtle assumptions to hide. Small modules with simple internals and clear external contracts become much more valuable. We can write an implementation that fits today's requirements straightforwardly, knowing that when requirements change substantially, replacing the internals behind a well-tested boundary is often cleaner and safer than layering another workaround onto an aging design.
 
-This changes what we should value in software design. Intricate internal abstractions built to anticipate every future variation become less attractive; they add complexity and context cost without paying for themselves. Small, replaceable modules with clear external contracts become much more valuable. We can keep internal implementations simple for today's requirements, knowing that when requirements change substantially, we can replace the module rather than bend it out of shape.
+There is an important limit to this idea. Replacing a stateless or computational component, such as a pricing calculator, an export formatter or a parser, is straightforward when its behavior is well captured at the boundary. Replacing a stateful component is a different matter. Modules that own persistent schemas, queues, wire formats or subtle undocumented behavior that callers have quietly come to rely on cannot be swapped out casually. In a storage engine, you can replace a compaction heuristic behind a stable interface far more easily than you can replace an on-disk format. Recognizing that difference helps us put our design discipline where it lasts: into durable data models, explicit contracts and narrow cores, while keeping the surrounding logic small enough to replace.
 
-This also reinforces [continuous cultivation of software](./continuous-cultivation-of-software.md). Investigating whether a tangled subsystem can be split into a small invariant-enforcing core and simpler replaceable parts is an investment that pays off on every subsequent change.
+## Where designing for delegation breaks down
+
+Clean boundaries are much easier to draw on a whiteboard than to maintain in a working system.
+
+Parnas's principle depends on knowing which design decisions are likely to change. If we draw boundaries prematurely around a domain we do not yet understand, ordinary changes still cut across multiple modules, except now every edit also has to pass through extra interfaces and translation layers. Designing for delegation does not mean carving a system into tiny pieces before we know where the real seams are.
+
+Protected interfaces also accumulate workarounds. When an agent runs into a narrow boundary that does not quite fit the task, it will often look for a way around it rather than stop to question the design: smuggling extra data through an existing field, duplicating part of a neighbor module's logic or pressuring the contract to grow optional parameters and loosely typed metadata bags. Eventually a legitimate requirement really does call for changing a core guarantee or moving a seam. Someone who understands the system still has to notice when workarounds are piling up and decide when a boundary has outlived its usefulness.
+
+Most teams are not starting from a clean design either. They already live inside the tangled order management system from the opening example. Trying to re-architect an entire codebase up front so agents can work safely on it is a good way to spend months drawing speculative boxes. A more practical path aligns with [continuous cultivation of software](./continuous-cultivation-of-software.md): watch where routine changes repeatedly collide with high-consequence code, and use those collisions to decide which invariant-enforcing core or volatile module is worth untangling next.
 
 ## Architecture as an enabling investment
 
-Architectural work is sometimes viewed with skepticism because it is easy to over-design for hypothetical futures that never arrive. Designing for delegation has a more immediate test: does this structure make ordinary changes easier to isolate, verify and trust today?
+Architectural work is often treated with skepticism, and for good reason: it is easy to spend weeks designing for hypothetical futures that never arrive. Designing for delegation has a more immediate test. Does a proposed change in structure make ordinary work easier to isolate, understand and verify today?
 
-We do not need to wait for AI agents to become capable of reasoning reliably across an entire tangled monolith before we can benefit from delegating work to them. We can shape our systems so that the consequences of a change are proportional to its intent.
-
-In the order management system, the goal is not to build an agent clever enough to edit checkout, invoicing, refunds and reporting safely all at once. It is to structure the system so that adding a discount rule never needed to touch refund invariants in the first place.
+If we shape our systems so that the consequences of a change stay proportional to its intent, we do not have to wait for agents capable of safely editing checkout, invoicing, refunds and reporting all at once. In the order management system, the point is to structure the domain so that adding a promotional discount rule never has to touch refund invariants.
