@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parent.parent
 ESSAYS_DIR = ROOT / "essays"
 README_PATH = ROOT / "README.md"
 STYLE_PATH = Path(__file__).resolve().parent / "style.css"
+AUDIO_DIR = Path(__file__).resolve().parent / "audio"
 OUT_DIR = ROOT / "_site"
 REPO_URL = "https://github.com/grove/essays"
 
@@ -304,6 +305,12 @@ def build(out_dir: Path = OUT_DIR) -> list[Path]:
         shutil.rmtree(out_dir)
     (out_dir / "essays").mkdir(parents=True, exist_ok=True)
     shutil.copy2(STYLE_PATH, out_dir / "style.css")
+    if AUDIO_DIR.exists():
+        mp3s = list(AUDIO_DIR.glob("*.mp3"))
+        if mp3s:
+            (out_dir / "audio").mkdir(parents=True, exist_ok=True)
+            for mp3 in mp3s:
+                shutil.copy2(mp3, out_dir / "audio" / mp3.name)
     (out_dir / ".nojekyll").write_text("", encoding="utf-8")
 
     internal_links: list[tuple[Path, str]] = []
@@ -357,6 +364,15 @@ def build(out_dir: Path = OUT_DIR) -> list[Path]:
             )
 
         subtitle_html = f'\n      <p class="subtitle">{html.escape(subtitle)}</p>' if subtitle else ""
+        audio_file = AUDIO_DIR / f"{entry['slug']}.mp3"
+        audio_html = (
+            f'\n      <figure class="audio-player">'
+            f'<figcaption>Listen to this essay</figcaption>'
+            f'<audio controls preload="none" src="../audio/{entry["slug"]}.mp3"></audio>'
+            f"</figure>"
+            if audio_file.exists()
+            else ""
+        )
         page_body = f"""    <nav class="top-nav" aria-label="Breadcrumb">
       <a class="back-link" href="../">&larr; All essays</a>
       <span class="top-meta">{idx + 1:02d} / {total:02d} &middot; {entry["minutes"]} min read</span>
@@ -365,7 +381,7 @@ def build(out_dir: Path = OUT_DIR) -> list[Path]:
       <article>
         <header>
           <h1>{html.escape(entry["title"])}</h1>{subtitle_html}
-        </header>
+        </header>{audio_html}
         {body_html}
       </article>
       <nav class="pager" aria-label="Essay navigation">
