@@ -16,7 +16,7 @@ README_PATH = ROOT / "README.md"
 STYLE_PATH = Path(__file__).resolve().parent / "style.css"
 AUDIO_DIR = Path(__file__).resolve().parent / "audio"
 OUT_DIR = ROOT / "_site"
-REPO_URL = "https://github.com/grove/essays"
+REPO_URL = "https://github.com/grove/software-that-improves-with-age"
 
 SAKURA_PETAL = "M0-2.5 C-3.8-6.5 -4.2-11.5 -1.4-14 L0-12.1 L1.4-14 C4.2-11.5 3.8-6.5 0-2.5Z"
 
@@ -279,6 +279,19 @@ def html_shell(*, title: str, description: str, css_href: str, body: str) -> str
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
+  <div class="collection-bar">
+    <nav class="collection-nav" aria-label="Collections">
+      <a class="collection-home" href="https://grove.github.io/compounding-engineering/">
+        <svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden="true"><circle cx="16" cy="16" r="13" stroke="currentColor"/><circle cx="16" cy="16" r="8.5" stroke="currentColor"/><circle cx="16" cy="16" r="4" stroke="currentColor"/></svg>
+        <span>Compounding Engineering</span>
+      </a>
+      <ul>
+        <li><a href="https://grove.github.io/software-that-improves-with-age/" aria-label="Software that improves with age" aria-current="true">Software</a></li>
+        <li><a href="https://grove.github.io/engineering-that-compounds/" aria-label="Engineering that compounds">Engineering</a></li>
+        <li><a href="https://grove.github.io/patterns-of-compounding-engineering/" aria-label="Patterns of compounding engineering">Patterns</a></li>
+      </ul>
+    </nav>
+  </div>
   <div class="page">
 {body}
     <footer class="site-footer">
