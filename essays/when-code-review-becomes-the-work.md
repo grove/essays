@@ -26,7 +26,7 @@ This does not mean that engineers should design every change in advance. That wo
 
 Agents do not reliably recognize when such reconsideration is warranted. An agent encountering an unexpected dependency might introduce a special case rather than investigate why the dependency exists. The tests pass, and we never learn that there was an interesting problem in the first place. Asking agents to record unexpected discoveries and abandoned approaches helps, but we also need investigations that are independent of the implementation task.
 
-This way of working has implications for how we develop engineering expertise. Sometimes it makes sense to have a less experienced engineer implement something themselves, even when an agent could do it faster. Giving them responsibility for a small subsystem allows them to experience the consequences of their own decisions. As I argued in [Implementation and understanding](https://gist.github.com/grove/365f675d4e92881bb8ccb44145f1a3d6), we need to become more deliberate about how engineers acquire understanding as we increasingly delegate implementation.
+This way of working has implications for how we develop engineering expertise. Sometimes it makes sense to have a less experienced engineer implement something themselves, even when an agent could do it faster. Giving them responsibility for a small subsystem allows them to experience the consequences of their own decisions. As I argued in [Implementation and understanding](./implementation-and-understanding.md), we need to become more deliberate about how engineers acquire understanding as we increasingly delegate implementation.
 
 ## Establishing confidence
 
@@ -56,7 +56,7 @@ The engineers responsible for operating a system must have authority over these 
 
 One thing that strikes me about code review is how often we find ourselves checking the same kinds of things. In a web application, we might repeatedly check whether new endpoints enforce the appropriate authorization rules. Rather than continuing to do this manually, we can organize the software so that authorization is difficult to omit and attempts to bypass it are detectable.
 
-This is an example of [continuous cultivation of software](https://gist.github.com/grove/a58ce7b4cf86bcf05111d82c7de7aaf8): systematically investigating and improving existing software to make its subsequent development easier.
+This is an example of [continuous cultivation of software](./continuous-cultivation-of-software.md): systematically investigating and improving existing software to make its subsequent development easier.
 
 The effort spent reviewing an individual change primarily benefits that change. The effort spent making an entire class of changes easier to verify benefits subsequent development as well.
 

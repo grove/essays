@@ -84,7 +84,7 @@ None of this work requires us to have decided that snapshots should expire. Nor 
 
 I think it is worth making a distinction between this kind of assignment and an ordinary implementation assignment. When we ask somebody to implement a feature, there is an expectation that the work will result in a change to the software. Questions that arise along the way tend to be resolved with that objective in mind. An investigation can be successful even when its findings persuade us not to make the change.
 
-This is also a natural extension of what I have previously described as [continuous cultivation of software](https://gist.github.com/grove/a58ce7b4cf86bcf05111d82c7de7aaf8). We can investigate the requirements of established software in much the same way. A restriction introduced several years ago can be subjected to experiments that would have been too expensive to conduct when the original decision was made. We could find that changes elsewhere in the system have made the restriction unnecessary, or that we misunderstood the problem in the first place.
+This is also a natural extension of what I have previously described as [continuous cultivation of software](./continuous-cultivation-of-software.md). We can investigate the requirements of established software in much the same way. A restriction introduced several years ago can be subjected to experiments that would have been too expensive to conduct when the original decision was made. We could find that changes elsewhere in the system have made the restriction unnecessary, or that we misunderstood the problem in the first place.
 
 ## What we do with the time we save
 

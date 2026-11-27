@@ -60,7 +60,7 @@ We cannot maintain a detailed understanding of every part of the software for wh
 
 This gives us another reason to care about simplicity, explicit contracts, reproducible experiments and the preservation of design rationale. They make it easier for someone to acquire an understanding of the system when they need it. The ease with which software can be understood is itself an important engineering property.
 
-This is one of the motivations behind what I have previously described as [continuous cultivation of software](https://gist.github.com/grove/a58ce7b4cf86bcf05111d82c7de7aaf8): the systematic investigation and improvement of existing software, independent of the immediate demands of feature development.
+This is one of the motivations behind what I have previously described as [continuous cultivation of software](./continuous-cultivation-of-software.md): the systematic investigation and improvement of existing software, independent of the immediate demands of feature development.
 
 Some of this work can arise naturally from ordinary development. An unexpected discovery during implementation can become the subject of a subsequent investigation. An incident review can lead to a broader examination of the assumptions on which a subsystem depends. An engineer becoming acquainted with an unfamiliar part of the system can conduct experiments rather than rely entirely on reading code and documentation.
 
