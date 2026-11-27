@@ -41,7 +41,7 @@ FAVICON_DATA = (
         + "/%3E"
         for deg in (0, 72, 144, 216, 288)
     )
-    + "%3Ccircle r='2.2' fill='%23a94f67'/%3E%3C/g%3E%3C/svg%3E"
+    + "%3Ccircle r='2.2' fill='%23963f57'/%3E%3C/g%3E%3C/svg%3E"
 )
 
 
@@ -272,6 +272,7 @@ def html_shell(*, title: str, description: str, css_href: str, body: str) -> str
   <link rel="stylesheet" href="{css_href}">
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
   <div class="page">
 {body}
     <footer class="site-footer">
@@ -360,7 +361,7 @@ def build(out_dir: Path = OUT_DIR) -> list[Path]:
       <a class="back-link" href="../">&larr; All essays</a>
       <span class="top-meta">{idx + 1:02d} / {total:02d} &middot; {entry["minutes"]} min read</span>
     </nav>
-    <main>
+    <main id="main">
       <article>
         <header>
           <h1>{html.escape(entry["title"])}</h1>{subtitle_html}
@@ -397,14 +398,14 @@ def build(out_dir: Path = OUT_DIR) -> list[Path]:
         )
         list_items.append(
             f"""        <li class="essay-item">
-          <a class="essay-link" href="essays/{entry['slug']}.html">
-            <span class="essay-num">{idx:02d}</span>
+          <div class="essay-card">
+            <span class="essay-num" aria-hidden="true">{idx:02d}</span>
             <div class="essay-head">
-              <span class="essay-title">{html.escape(entry['title'])}</span>
+              <a class="essay-title-link" href="essays/{entry['slug']}.html">{html.escape(entry['title'])}</a>
               <span class="essay-meta">{entry['minutes']} min</span>
             </div>
             {summary_html}
-          </a>
+          </div>
         </li>"""
         )
 
@@ -414,7 +415,7 @@ def build(out_dir: Path = OUT_DIR) -> list[Path]:
       {SAKURA_SVG}
       <h1>{html.escape(site_title)}</h1>{subtitle_html}
     </header>
-    <main>
+    <main id="main">
       <section class="intro">
         {intro_html}
       </section>
