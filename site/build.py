@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import html
 import math
 import re
@@ -275,7 +276,7 @@ def html_shell(*, title: str, description: str, css_href: str, body: str) -> str
   <title>{html.escape(title)}</title>
   <meta name="description" content="{html.escape(description, quote=True)}">
   <link rel="icon" href="{FAVICON_DATA}">
-  <link rel="stylesheet" href="{css_href}">
+  <link rel="stylesheet" href="{css_href}?v={hashlib.sha256((ROOT / 'site/style.css').read_bytes()).hexdigest()[:16]}">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
